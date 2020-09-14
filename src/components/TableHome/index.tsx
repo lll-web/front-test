@@ -99,53 +99,16 @@ function TableHome() {
     });
   }, [dataLink]);
 
-  //Можно было вынести сортировку и не дублировать код...
-  //Знаю, что плохо; (Можно было взять сразу таблицу с сортировкой по столбцам (Material-UI))
-  function sortBy(col: number) {
-    switch (col) {
-      case 0: //ID
-        if (data[0].id < data[data.length - 1].id) {
-          setData([...data].sort((a, b) => (a.id < b.id ? 1 : -1)));
-        } else {
-          setData([...data].sort((a, b) => (a.id > b.id ? 1 : -1)));
-        }
-        break;
-      case 1: //FirstName
-        if (data[0].firstName < data[data.length - 1].firstName) {
-          setData(
-            [...data].sort((a, b) => (a.firstName < b.firstName ? 1 : -1))
-          );
-        } else {
-          setData(
-            [...data].sort((a, b) => (a.firstName > b.firstName ? 1 : -1))
-          );
-        }
-        break;
-      case 2: //LastName
-        if (data[0].lastName < data[data.length - 1].lastName) {
-          setData([...data].sort((a, b) => (a.lastName < b.lastName ? 1 : -1)));
-        } else {
-          setData([...data].sort((a, b) => (a.lastName > b.lastName ? 1 : -1)));
-        }
-        break;
-      case 3: //Email
-        if (data[0].email < data[data.length - 1].email) {
-          setData([...data].sort((a, b) => (a.email < b.email ? 1 : -1)));
-        } else {
-          setData([...data].sort((a, b) => (a.email > b.email ? 1 : -1)));
-        }
-        break;
-      case 4: //Phone
-        if (data[0].phone < data[data.length - 1].phone) {
-          setData([...data].sort((a, b) => (a.phone < b.phone ? 1 : -1)));
-        } else {
-          setData([...data].sort((a, b) => (a.phone > b.phone ? 1 : -1)));
-        }
-        break;
-      default:
-        setData([...data]);
-        break;
+  function simpleSorting(property: keyof UserType) {
+    if (data[0][property] < data[data.length - 1][property]) {
+      setData([...data].sort((a, b) => (a[property] < b[property] ? 1 : -1)));
+    } else {
+      setData([...data].sort((a, b) => (a[property] > b[property] ? 1 : -1)));
     }
+  }
+
+  function sortBy(column: keyof UserType) {
+    simpleSorting(column);
   }
 
   return (
@@ -360,7 +323,7 @@ function TableHome() {
                 <TableRow>
                   <TableCell
                     onClick={() => {
-                      sortBy(0);
+                      sortBy("id");
                     }}
                     align="right"
                   >
@@ -368,7 +331,7 @@ function TableHome() {
                   </TableCell>
                   <TableCell
                     onClick={() => {
-                      sortBy(1);
+                      sortBy("firstName");
                     }}
                     align="right"
                   >
@@ -376,7 +339,7 @@ function TableHome() {
                   </TableCell>
                   <TableCell
                     onClick={() => {
-                      sortBy(2);
+                      sortBy("lastName");
                     }}
                     align="right"
                   >
@@ -384,7 +347,7 @@ function TableHome() {
                   </TableCell>
                   <TableCell
                     onClick={() => {
-                      sortBy(3);
+                      sortBy("email");
                     }}
                     align="right"
                   >
@@ -392,7 +355,7 @@ function TableHome() {
                   </TableCell>
                   <TableCell
                     onClick={() => {
-                      sortBy(4);
+                      sortBy("phone");
                     }}
                     align="right"
                   >
